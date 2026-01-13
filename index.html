@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechBook AI 智能创作助手</title>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css" integrity="sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfGm/19b660b/VbXwTAlntv7yUg" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .prose code {
+            font-family: 'Fira Code', monospace;
+        }
+        
+        /* Typography overrides for better technical document readability */
+        .prose {
+            max-width: 65ch;
+            color: #334155;
+        }
+        .prose h1, .prose h2, .prose h3, .prose h4 {
+            color: #0f172a;
+            font-weight: 700;
+        }
+        .prose strong {
+            color: #0f172a;
+            font-weight: 700;
+        }
+
+        /* Table Styling fixes */
+        .prose table {
+            font-size: 0.9em;
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2em;
+            margin-bottom: 2em;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+        }
+        .prose thead th {
+            text-align: left;
+            padding: 1em;
+            background-color: #f8fafc;
+            border-bottom: 2px solid #e2e8f0;
+            color: #1e293b; 
+            font-weight: 600;
+        }
+        .prose tbody td {
+            padding: 1em;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: top;
+            background-color: #fff;
+            color: #334155;
+        }
+        .prose tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* List Styling fixes */
+        .prose ul > li, .prose ol > li {
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+        }
+        .prose li::marker {
+            color: #64748b;
+        }
+
+        /* Math formula spacing */
+        .katex-display {
+            margin: 1.5em 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+
+        /* Fallback for prose if plugin fails */
+        .manual-prose h1 { font-size: 2.25rem; font-weight: 900; margin-bottom: 1.5rem; }
+        .manual-prose h2 { font-size: 1.875rem; font-weight: 800; margin-top: 2rem; margin-bottom: 1rem; }
+        .manual-prose h3 { font-size: 1.5rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.75rem; }
+        .manual-prose p { margin-bottom: 1.25rem; font-size: 1.125rem; line-height: 1.75; }
+        .manual-prose pre { background: #1e293b; color: white; padding: 1.5rem; border-radius: 0.75rem; overflow-x: auto; margin: 1.5rem 0; }
+
+        /* Print styles for high-quality PDF export */
+        @media print {
+            body, html {
+                height: auto !important;
+                overflow: visible !important;
+                background: white !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            #root, main {
+                display: block !important;
+                height: auto !important;
+                width: 100% !important;
+                overflow: visible !important;
+                position: static !important;
+                background: white !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                flex: none !important;
+            }
+            #root > div {
+                display: block !important;
+                height: auto !important;
+                overflow: visible !important;
+                flex: none !important;
+                min-height: 0 !important;
+            }
+            aside, button, .no-print, .header-ui, .toc-summary, iframe {
+                display: none !important;
+            }
+            .manuscript-container {
+                box-shadow: none !important;
+                border: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                width: 100% !important;
+                max-width: none !important;
+                position: static !important;
+            }
+            .prose {
+                max-width: none !important;
+                color: black !important;
+                padding: 1.5cm !important;
+            }
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            h1 {
+                page-break-before: always;
+                text-align: center;
+                margin-top: 2cm !important;
+                font-size: 28pt !important;
+            }
+            h1:first-of-type {
+                page-break-before: auto;
+            }
+            h2 {
+                page-break-before: always;
+                border-bottom: 2px solid #eee;
+                padding-bottom: 0.5rem;
+                margin-top: 1cm !important;
+                font-size: 20pt !important;
+            }
+            h3 {
+                margin-top: 1.5rem;
+                font-size: 16pt !important;
+                color: #000 !important;
+            }
+            p {
+                font-size: 11pt !important;
+                line-height: 1.5 !important;
+                orphans: 3;
+                widows: 3;
+            }
+            pre {
+                white-space: pre-wrap !important;
+                word-wrap: break-word !important;
+                background: #f5f5f5 !important;
+                color: black !important;
+                border: 1px solid #ddd !important;
+                break-inside: avoid;
+            }
+            code {
+                color: black !important;
+                background: transparent !important;
+                font-size: 0.9em !important;
+            }
+            table {
+                width: 100% !important;
+                border-collapse: collapse !important;
+                margin: 1em 0 !important;
+                break-inside: auto;
+            }
+            tr {
+                break-inside: avoid;
+                break-after: auto;
+            }
+            th, td {
+                border: 1px solid #ccc !important;
+                padding: 6px !important;
+            }
+            a {
+                text-decoration: none;
+                color: black !important;
+            }
+        }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.35.0",
+    "react-markdown": "https://esm.sh/react-markdown@^10.1.0",
+    "remark-gfm": "https://esm.sh/remark-gfm@^4.0.0",
+    "remark-math": "https://esm.sh/remark-math@^6.0.0",
+    "rehype-katex": "https://esm.sh/rehype-katex@^7.0.0",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "react-syntax-highlighter/": "https://esm.sh/react-syntax-highlighter@^16.1.0/",
+    "react-syntax-highlighter": "https://esm.sh/react-syntax-highlighter@^16.1.0"
+  }
+}
+</script>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+</html>

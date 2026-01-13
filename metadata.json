@@ -1,0 +1,5 @@
+{
+  "name": "TechBook AI 创作助手",
+  "description": "专业的个人技术电子书创作平台，利用 Gemini AI 规划、生成和美化高质量技术文档。",
+  "requestFramePermissions": []
+}
