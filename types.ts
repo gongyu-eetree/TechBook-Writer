@@ -11,6 +11,7 @@ export interface EbookStructure {
 export type TargetAudience = 'Novice' | 'Intermediate' | 'Expert';
 
 export interface EbookProject {
+  id?: string;
   description: string;
   materials: string;
   language: string;
@@ -20,6 +21,10 @@ export interface EbookProject {
   referenceLinks: string[];
   targetLength: string;
   chapterCount: number;
+  content?: string;
+  coverUrl?: string;
+  structure?: EbookStructure;
+  lastUpdated?: number;
 }
 
 export enum GenerationStatus {
