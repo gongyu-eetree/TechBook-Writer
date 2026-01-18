@@ -4,6 +4,8 @@ export interface EbookStructure {
   chapters: Array<{
     title: string;
     description: string;
+    estimatedPages: number;
+    isGenerated?: boolean;
   }>;
   coverPrompt: string;
 }
@@ -22,6 +24,7 @@ export interface EbookProject {
   targetLength: string;
   chapterCount: number;
   content?: string;
+  chapterContents?: string[];
   coverUrl?: string;
   structure?: EbookStructure;
   lastUpdated?: number;
@@ -33,6 +36,7 @@ export enum GenerationStatus {
   REVIEW_STRUCTURE = 'REVIEW_STRUCTURE',
   GENERATING_CONTENT = 'GENERATING_CONTENT',
   GENERATING_COVER = 'GENERATING_COVER',
+  GENERATING_PPT = 'GENERATING_PPT',
   COMPLETED = 'COMPLETED',
   ERROR = 'ERROR'
 }
@@ -52,3 +56,19 @@ export const CREDIT_PACKS: CreditPack[] = [
   { id: 'pro', name: '专业包', credits: 500000, price: '¥99.0', description: '适合长期创作，单字成本大幅降低' },
   { id: 'unlimited', name: '创作者包', credits: 2000000, price: '¥299.0', description: '海量点数，适合高产技术博主或工作室' },
 ];
+
+export interface PPTSlide {
+  title: string;
+  content: string[];
+  layout: 'TITLE' | 'BULLETS' | 'SECTION' | 'THANKS';
+}
+
+export interface PPTStructure {
+  slides: PPTSlide[];
+  theme: {
+    primaryColor: string;
+    secondaryColor: string;
+    backgroundColor: string;
+    textColor: string;
+  };
+}

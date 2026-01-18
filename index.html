@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TechBook AI 智能创作助手</title>
     <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css" integrity="sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfGm/19b660b/VbXwTAlntv7yUg" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
@@ -20,62 +20,26 @@
             font-family: 'Fira Code', monospace;
         }
         
-        .prose {
-            max-width: 65ch;
-            color: #334155;
+        /* PDF 导出专用样式，确保分页与 A4 契合 */
+        .pdf-export-container {
+            background: white !important;
+            padding: 20mm !important;
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto;
+            color: black !important;
         }
+        
+        .pdf-export-container h1 { page-break-before: always; text-align: center; font-size: 28pt; margin-bottom: 50pt; }
+        .pdf-export-container h2 { page-break-before: always; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 30pt; }
+        .pdf-export-container pre { page-break-inside: avoid; background: #f8f8f8 !important; border: 1px solid #eee !important; }
+        .pdf-export-container img { page-break-inside: avoid; max-width: 100%; height: auto; display: block; margin: 20px auto; }
+        .pdf-export-container table { page-break-inside: avoid; width: 100%; border-collapse: collapse; }
+        .pdf-export-container blockquote { border-left: 4px solid #ddd; padding-left: 15px; font-style: italic; }
 
-        /* Print styles for high-quality PDF export */
-        @media print {
-            @page {
-              size: A4;
-              margin: 2cm;
-            }
-            html, body {
-                background: white !important;
-                color: black !important;
-            }
-            .no-print {
-                display: none !important;
-            }
-            #root, main {
-                display: block !important;
-                background: white !important;
-                overflow: visible !important;
-                height: auto !important;
-                width: 100% !important;
-            }
-            .manuscript-container {
-                box-shadow: none !important;
-                border: none !important;
-                padding: 0 !important;
-                margin: 0 !important;
-                width: 100% !important;
-                display: block !important;
-            }
-            .prose {
-                max-width: none !important;
-                color: black !important;
-                font-size: 11pt !important;
-            }
-            h1 { page-break-before: always; text-align: center; font-size: 24pt !important; margin-bottom: 30pt !important; }
-            h2 { page-break-before: always; border-bottom: 1px solid #ddd; padding-bottom: 10px; font-size: 18pt !important; margin-top: 20pt !important; }
-            pre {
-                white-space: pre-wrap !important;
-                background: #f4f4f4 !important;
-                color: black !important;
-                border: 1px solid #ddd !important;
-                page-break-inside: avoid;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-            code {
-                color: #000 !important;
-                background: #f0f0f0 !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-        }
+        .prose img[align="left"] { margin-right: 1.5rem; margin-bottom: 1rem; float: left; }
+        .prose img[align="right"] { margin-left: 1.5rem; margin-bottom: 1rem; float: right; }
+        .prose img[align="center"] { display: block; margin-left: auto; margin-right: auto; }
     </style>
 <script type="importmap">
 {
@@ -88,9 +52,12 @@
     "remark-gfm": "https://esm.sh/remark-gfm@^4.0.0",
     "remark-math": "https://esm.sh/remark-math@^6.0.0",
     "rehype-katex": "https://esm.sh/rehype-katex@^7.0.0",
+    "rehype-raw": "https://esm.sh/rehype-raw@^7.0.0",
     "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
     "react-syntax-highlighter/": "https://esm.sh/react-syntax-highlighter@^16.1.0/",
-    "react-syntax-highlighter": "https://esm.sh/react-syntax-highlighter@^16.1.0"
+    "react-syntax-highlighter": "https://esm.sh/react-syntax-highlighter@^16.1.0",
+    "pptxgenjs": "https://esm.sh/pptxgenjs@3.12.0",
+    "html2pdf.js": "https://esm.sh/html2pdf.js@0.10.1"
   }
 }
 </script>
